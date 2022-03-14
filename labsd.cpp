@@ -7,7 +7,7 @@
 #include <chrono>
 using namespace std;
 
-void count_sort10 (vector<long  long> &v, int p, int baza = 10) {
+void count_sort10 (vector<long  long> &v, long long p, int baza = 10) {
     vector<int> ap(baza, 0);
     vector<long long> aux(v.size());
 
@@ -37,14 +37,14 @@ void radix_sort10 (vector<long long> &v, int baza = 10) {
         x /= baza;
     }
 
-    int p = 1;
+    long long p = 1;
     for (int i = 0; i < cif; ++i) {
         count_sort10 (v, p, baza);
         p *= baza;
     }
 }
 
-void count_sort (vector<long long> &v, int p, int baza2) {
+void count_sort (vector<long long> &v, long long p, int baza2) {
     vector<long long> aux(v.size());
     int baza = 1 << baza2;         //2^(baza2)
     vector<int> ap(baza, 0);
@@ -58,7 +58,7 @@ void count_sort (vector<long long> &v, int p, int baza2) {
 
     int n = (int)v.size() - 1;
     for (int i = n; i >= 0; --i) {
-        int index = (v[i] >> p) & (baza - 1);
+        long long index = (v[i] >> p) & (baza - 1);
         aux[ap[index] - 1] = v[i];
         ap[index]--;
     }
@@ -75,7 +75,7 @@ void radix_sort (vector<long long> &v, int baza2) {     //baza este 2^(baza2)
         x >>= baza2;     //shiftam la dreapta cu exponentul lui 2 (impartire)
     }
 
-    int p = 0;
+    long long p = 0;
     for (int i = 0; i < cif; ++i) {
         count_sort (v, p, baza2);
         p += baza2;
@@ -324,13 +324,16 @@ void testeaza_cu_nr_random () {
             cout << "shell sort basic:  " << ms_int.count() << "ms" << "  " << (sortat_bine(b, a) ? "sortat bine" : "nesortat") << '\n';
 
 
-            b = v;
-            t1 = std::chrono::high_resolution_clock::now();
-            shell_sortC(b);
-            t2 = std::chrono::high_resolution_clock::now();
+            if (n != p[2]) {
+                b = v;
+                t1 = std::chrono::high_resolution_clock::now();
+                shell_sortC(b);
+                t2 = std::chrono::high_resolution_clock::now();
 
-            ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
-            cout << "shell sort ciura:  " << ms_int.count() << "ms" << "  " << (sortat_bine(b, a) ? "sortat bine" : "nesortat") << '\n';
+                ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+                cout << "shell sort ciura:  " << ms_int.count() << "ms" << "  " << (sortat_bine(b, a) ? "sortat bine" : "nesortat") << '\n';
+            }
+
 
             if (Max != p2[2]) {
                 b = v;
